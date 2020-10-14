@@ -1,0 +1,13 @@
+/mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.csprojAssemblyReference.cache
+/mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.AssemblyInfoInputs.cache
+/mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.AssemblyInfo.cs
+/mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.csproj.CoreCompileInputs.cache
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/gag2score
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/gag2score.deps.json
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/gag2score.runtimeconfig.json
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/gag2score.runtimeconfig.dev.json
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/gag2score.dll
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/gag2score.pdb
+/mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.dll
+/mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.pdb
+/mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.genruntimeconfig.cache
