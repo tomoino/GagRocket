@@ -9,16 +9,25 @@ namespace gag2score
         static void Main(string[] args)
         {
             HumorCalculator hc = new HumorCalculator();
-            string[][] data = loadCSV("../src/dajare_data_10.csv");
+            // Console.WriteLine(hc.humorScore("私は日本人だ。"));
+            string[][] data = loadCSV("../src/dajare_data_728.csv");
+            int n = data.Length;
+            int cnt = 0;
 
             foreach (string[] row in data) {
-                foreach (string elm in row) {
-                    System.Console.Write("{0} ", elm);
-                }
-                System.Console.Write("\n");
-                hc.humorScore(row[0]);
+                // foreach (string elm in row) {
+                //     System.Console.Write("{0} ", elm);
+                // }
+                // System.Console.Write("\n");
+                double humorScore = hc.humorScore(row[0]);
+                if (humorScore > 0) 
+                    cnt++;
+
+                // System.Console.WriteLine(humorScore);
+                // Console.WriteLine();
             }
 
+            Console.WriteLine("識別率:{0}%", (double)cnt / (double)n*100.0);
         }
 
         static string[][] loadCSV(string filePath) {
