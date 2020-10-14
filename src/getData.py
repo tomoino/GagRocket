@@ -5,7 +5,7 @@ import csv
 
 data = []
 
-for i in range(10):
+for i in range(100000):
     print(i + 1)
     try:
         urlName = "https://dajare.jp/works/"+str(i+1)+"/"
@@ -21,18 +21,10 @@ for i in range(10):
     except:
         continue
 
-print(data)
 with open('dajare_data.csv', 'w', newline="") as f:
     writer = csv.writer(f)
-    writer.writerows(data)
-# for elem in elems: 
-#   try:
-#     string = elem.get("class").pop(0)
-#     if string in "category":
-#       print(elem.string)
-#       title = elem.find_next_sibling("h3")
-#       print(title.text.replace('\n',''))
-#       r = elem.find_previous('a')
-#       print(urlName + r.get('href'), '\n')
-#   except:
-#     pass
+    for row in data:
+        try:
+            writer.writerow(row)
+        except:
+            continue
