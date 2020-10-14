@@ -8,17 +8,17 @@ namespace gag2score
     {
         static void Main(string[] args)
         {
+            HumorCalculator hc = new HumorCalculator();
             string[][] data = loadCSV("../src/dajare_data_10.csv");
 
             foreach (string[] row in data) {
                 foreach (string elm in row) {
                     System.Console.Write("{0} ", elm);
                 }
-                    System.Console.Write("\n");
+                System.Console.Write("\n");
+                hc.humorScore(row[0]);
             }
 
-            HumorCalculator hc = new HumorCalculator();
-            hc.humorScore("ふとんがふっとんだ");
         }
 
         static string[][] loadCSV(string filePath) {

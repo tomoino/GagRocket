@@ -11,3 +11,12 @@
 /mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.dll
 /mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.pdb
 /mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.genruntimeconfig.cache
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/IpaDic/AUTHORS
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/IpaDic/char.bin
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/IpaDic/COPYING
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/IpaDic/matrix.bin
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/IpaDic/sys.dic
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/IpaDic/unk.dic
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/LibNMeCab.dll
+/mnt/d/data/src/GagRocket/gag2score/bin/Debug/netcoreapp3.1/LibNMeCab.IpaDicBin.dll
+/mnt/d/data/src/GagRocket/gag2score/obj/Debug/netcoreapp3.1/gag2score.csproj.CopyComplete
