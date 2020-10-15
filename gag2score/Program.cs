@@ -10,7 +10,7 @@ namespace gag2score
         {
             HumorCalculator hc = new HumorCalculator();
             // Console.WriteLine(hc.humorScore("私は日本人だ。"));
-            string[][] data = loadCSV("../src/dajare_data_728.csv");
+            string[][] data = loadCSV("../src/dajare_data_4297.csv");
             int n = data.Length;
             int cnt = 0;
 
