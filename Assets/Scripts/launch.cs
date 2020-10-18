@@ -16,6 +16,8 @@ public class launch : MonoBehaviour
 
     private DictationRecognizer m_DictationRecognizer;
 
+    private int flag = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,10 @@ public class launch : MonoBehaviour
         Debug.Log("ボタンを押した");
         GameObject obj = GameObject.Find("Sphere");  
         obj.transform.position += Vector3.up;
+
+        if(flag == 0){
+            flag = 1;
+
          m_DictationRecognizer = new DictationRecognizer();
 
         m_DictationRecognizer.DictationResult += (text, confidence) =>
@@ -57,5 +63,9 @@ public class launch : MonoBehaviour
         };
 
         m_DictationRecognizer.Start();
+        }
+        else{
+            m_DictationRecognizer.Stop();
+        }
     }
 }
