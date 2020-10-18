@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+ using System.Text;
 
 namespace gag2score
 {
@@ -8,8 +9,9 @@ namespace gag2score
     {
         static void Main(string[] args)
         {
-            string[][] data = loadCSV("../src/dajare_data_59900.csv");
-            testDajareDiscriminator(data);
+            string[][] data = loadCSV("../src/dajare_data_10.csv");
+            // testDajareDiscriminator(data);
+            makeDataForLearning(data);
         }
 
         static string[][] loadCSV(string filePath) {
@@ -21,19 +23,35 @@ namespace gag2score
             return list.ToArray();
         }
 
-        // // だじゃれと判定されるデータをホールドアウト法でテストデータと学習データに分割して出力する
-        // static void makeDataForLearning(string[][] data, double train_data_rate) {
-        //     HumorCalculator hc = new HumorCalculator();
-        //     int n = data.Length;
-        //     var dajareList = new List<string[]>(); // moto, score, reviewnum, wordlist, kana
-        //     foreach (string[] row in data) {
-        //         var (wordList, kana) = hc.morph(row[0]);
+        // だじゃれと判定されるデータをCSV出力する
+        static void makeDataForLearning(string[][] data) {
+            HumorCalculator hc = new HumorCalculator();
+            var dajareList = new List<string[]>(); // moto, score, reviewnum, wordlist, kana
+            foreach (string[] row in data) {
+                var (wordList, kana) = hc.morph(row[0]);
 
-        //         if (hc.isDajare(kana)) {
+                if (hc.isDajare(kana)) {
+                    var newRow = new string[] {row[0], row[1], row[2], string.Join( " ", wordList), kana}; 
+                    dajareList.Add(newRow);
+                }
+            }
 
-        //         }
-        //     }
-        // }
+            // CSVに書き込み
+            try
+            {
+                // ファイルを開く
+                StreamWriter file = new StreamWriter(@"dajare_data_for_learning.csv", false, Encoding.UTF8);
+                foreach (string[] row in dajareList)
+                {
+                    file.WriteLine($"{row[0]},{row[1]},{row[2]},{row[3]},{row[4]}");
+                }
+                file.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message); // 例外検出時にエラーメッセージを表示
+            }
+        }
 
         static void testDajareDiscriminator (string[][] data) {
             HumorCalculator hc = new HumorCalculator();
