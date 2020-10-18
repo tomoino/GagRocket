@@ -9,7 +9,7 @@ namespace gag2score
     {
         static void Main(string[] args)
         {
-            string[][] data = loadCSV("../src/dajare_data_10.csv");
+            string[][] data = loadCSV("../src/dajare_data_59900.csv");
             // testDajareDiscriminator(data);
             makeDataForLearning(data);
         }
