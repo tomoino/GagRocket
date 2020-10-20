@@ -35,6 +35,7 @@ def load_data(filepath, max_length=50, min_length=1):
     with open(filepath,'r',encoding="utf-8_sig") as f:
         for l in f:
             row = l.split(",")
+            
             score = row[1]
             kana = row[4]
 
