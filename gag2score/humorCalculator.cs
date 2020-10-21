@@ -28,7 +28,6 @@ namespace gag2score
                 }
                 List<string> duplicates = FindDuplication(list);
                 if (duplicates.Count > 0) {
-                    //dispList(duplicates);
                     return true;
                 }
             }
@@ -37,27 +36,21 @@ namespace gag2score
 
         public double humorScore(string str)
         {
-            string[] strToTrim = { " "," ", "、", "。", "!", "?", "！", "？", "「", "」", "『", "』", "(", ")", "（", "）", "・", "～", "\"", "\'"};
-            foreach (string s in strToTrim) {
-                str = str.Replace(s, "");
-            }
-
             var (wordList, kana) = morph(str);
 
-            // Console.WriteLine(str);
-            // dispList(wordList);
-            // Console.WriteLine(kana);
-
             if (!isDajare(kana)) {
-                // Console.WriteLine(str);
-                // Console.WriteLine(kana);
                 return 0.0;
             }
 
             return 1.0;
         }
 
-        static (List<string>, string) morph(string str) {
+        public (List<string>, string) morph(string str) {
+            string[] strToTrim = { " "," ", "、", "。", "!", "?", "！", "？", "「", "」", "『", "』", "(", ")", "（", "）", "・", "～", "\"", "\'"};
+            foreach (string s in strToTrim) {
+                str = str.Replace(s, "");
+            }
+
             var wordList = new List<string>();
             string kana = "";
 
