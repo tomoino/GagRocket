@@ -63,11 +63,6 @@ def load_word_vec(filepath):
     return np.array(embedding_matrix), word_index
 
 def train(inputs, targets, embedding_matrix, batch_size=100, epoch_count=100, max_length=32, model_filepath="rnn_model.h5", learning_rate=0.001):
-    # 学習率を少しずつ下げるようにする
-    # start = learning_rate
-    # stop = learning_rate * 0.01
-    # learning_rates = np.linspace(start, stop, epoch_count)
-
     # 単語数、embeddingの次元
     num_words, w2v_size = embedding_matrix.shape
     # モデルの構築
@@ -80,12 +75,6 @@ def train(inputs, targets, embedding_matrix, batch_size=100, epoch_count=100, ma
         RNN(SimpleRNNCell(1, activation='sigmoid'), input_shape=(None, num_words, w2v_size), return_sequences=False),
     ])
     model.summary()
-    # inp = Input(shape=(max_length,))
-    # emb = Embedding(num_words, w2v_size,
-    #             weights=[embedding_matrix], 
-    #             input_length=max_length,
-    #             trainable=False, 
-    #             mask_zero=True)(inp)
     model.compile(loss='binary_crossentropy',
               optimizer=tf.keras.optimizers.Adam(1e-4),
               metrics=['accuracy'])
