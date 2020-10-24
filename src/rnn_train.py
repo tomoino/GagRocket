@@ -9,6 +9,7 @@ from numpy import *
 import codecs
 import pandas as pd
 import matplotlib.pyplot as plt
+import csv
 
 def load_data(filepath, word_index, max_length=32):
     gags = []
@@ -33,13 +34,14 @@ def load_data(filepath, word_index, max_length=32):
     return gags
 
 # word2vecからembedding layer用の重み行列を作成。wordとindexを結びつける辞書word_indexも返す。
+# predict用にword_index.csvも生成する
 def load_word_vec(filepath):
     word_index = {}
     embedding_matrix = []
 
     with open(filepath,'r',encoding="utf-8_sig") as f:
         for l in f:
-            row = l.replace("\n", "").split(",")
+            row = l.replace("\n", "").split(" ")
             if len(row) != 101: # 例外が起きる行は無視する
                 continue
             word = row[0]
@@ -49,6 +51,14 @@ def load_word_vec(filepath):
 
     # padding用(入力の時系列方向の長さを揃えるためにtoken id=0でpaddingする想定)にindexを追加
     word_index['0'] = 0
+
+    with open('word_index.csv', 'w', newline="") as f:
+        writer = csv.writer(f)
+        for key, val in word_index.items():
+            try:
+                writer.writerow([key,val])
+            except:
+                continue
 
     return np.array(embedding_matrix), word_index
 
@@ -93,7 +103,7 @@ def train(inputs, targets, embedding_matrix, batch_size=100, epoch_count=100, ma
     return history
 
 if __name__ == "__main__":
-    embedding_matrix, word_index = load_word_vec("word_vec.csv")
+    embedding_matrix, word_index = load_word_vec("w2v.txt")
     gags = load_data("data_for_train.csv", word_index)
 
     input_values = []

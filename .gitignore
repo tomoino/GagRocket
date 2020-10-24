@@ -58,3 +58,6 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# RNN
+src/w2v.txt
+src/word_index.csv
