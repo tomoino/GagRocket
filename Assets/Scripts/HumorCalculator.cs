@@ -36,15 +36,17 @@ namespace Gag2Score
             return false;
         }
 
-        public double humorScore(string str)
+        public (bool, string) humorScore(string str)
         {
             var (wordList, kana) = morph(str);
+            var words = string.Join(" ", wordList);
+            return (isDajare(kana), words);
 
-            if (!isDajare(kana)) {
-                return 0.0;
-            }
+            // if (!isDajare(kana)) {
+            //     return (false, kana);
+            // }
 
-            return 1.0;
+            // return (true, kana);
         }
 
         public (List<string>, string) morph(string str) {

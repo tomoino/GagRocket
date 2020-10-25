@@ -23,13 +23,12 @@ word_index = load_word_index("word_index.csv")
 
 @app.route('/', methods=['POST'])
 def index():
-    # jsonリクエストから値取得
     payload = request.json
     gag = payload.get('text')
 
     max_length = 32
-    gag = [word_index[word] for word in gag.split(' ') if word in word_index] # word_indexに変換
-    gag = gag + [0]*(max_length - len(gag)) # 長さをそろえる
+    gag = [word_index[word] for word in gag.split(' ') if word in word_index]
+    gag = gag + [0]*(max_length - len(gag))
     ret = predict(np.array([gag]))
     predict_result = ret[0][0]
 
