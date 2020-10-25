@@ -46,6 +46,10 @@ public class launch : MonoBehaviour
     }
     public void pushbutton(){
         Debug.Log("ボタンを押した");
+        HumorCalculator hc = new HumorCalculator();
+        double result = hc.humorScore("布団が吹っ飛んだ");
+        Debug.LogFormat("HC: {0}",result);
+        return;
 
         GameObject obj = GameObject.Find("AtomRocket");  
         obj.transform.position += Vector3.up;
@@ -64,9 +68,5 @@ public class launch : MonoBehaviour
         //Debug.LogFormat("dajare");
         Text dajare_text = dajare_object.GetComponent<Text>(); 
         dajare_text.text = resultText;
-        
-        HumorCalculator hc = new HumorCalculator();
-        double result = hc.humorScore(resultText);
-        Debug.LogFormat("HC: {0}",result);
     }
 }
