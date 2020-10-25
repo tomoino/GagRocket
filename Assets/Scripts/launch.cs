@@ -17,7 +17,7 @@ public class launch : MonoBehaviour
 
     public GameObject rocket_object = null;
 
-    private float speed = 1;
+    private float speed = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -45,15 +45,18 @@ public class launch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // GameObject obj = GameObject.Find("AtomRocket");
-        // if(flag == 2 && obj.transform.position.y<score){
-        //     obj.transform.position += Vector3.up;
-        // }
-
         if(flag == 2){
             Rigidbody rb = rocket_object.GetComponent<Rigidbody>();  
             Vector3 force = new Vector3 (0.0f,speed,0.0f);
             rb.AddForce (force);
+        }
+
+        GameObject obj = GameObject.Find("AtomRocket");
+        if(speed<=5.0 && obj.transform.position.y>50){
+            Rigidbody rb2 = rocket_object.GetComponent<Rigidbody>();
+            Vector3 force2 = new Vector3 (0.0f,-9.8f,0.0f);
+            rb2.AddForce (force2);
+            flag = 3;
         } 
     }   
     public void pushbutton(){
@@ -67,7 +70,7 @@ public class launch : MonoBehaviour
             Debug.LogFormat("result: {0}",resultText);
             dajare();
             //ダジャレをスコア化（floatで0~1が返ってくる)
-            float score = 0.3f;
+            float score = 0.5f;
             speed *= score;
             flag = 2;
         }
