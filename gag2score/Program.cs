@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
- using System.Text;
+using System.Text;
 
 namespace gag2score
 {
@@ -9,9 +9,15 @@ namespace gag2score
     {
         static void Main(string[] args)
         {
-            string[][] data = loadCSV("../src/dajare_data_59900.csv");
+            HumorCalculator hc = new HumorCalculator();
+
+            string dajare = "布団がふっとんだ";
+            double score = hc.humorScore(dajare);
+            Console.WriteLine($"Score: {score*100}%");
+
+            // string[][] data = loadCSV("../src/dajare_data_59900.csv");
             // testDajareDiscriminator(data);
-            makeDataForLearning(data);
+            // makeDataForLearning(data);
         }
 
         static string[][] loadCSV(string filePath) {
