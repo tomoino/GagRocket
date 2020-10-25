@@ -13,7 +13,7 @@ public class launch : MonoBehaviour
     private int flag = 0;
     private string resultText;
 
-  //public Gameobject dajare_object = null;
+    //public GameObject dajare_object = null;
 
     // Start is called before the first frame update
     void Start()
@@ -55,11 +55,12 @@ public class launch : MonoBehaviour
         else{
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
-          //  dajare();
+            //dajare();
         }
     }
-    //public void dajare(){
-    //    GameObject dajare_text = GameObject.Find("dajare"); 
-      //  dajare_text.text = resultText;
+    // public void dajare(){
+    //     Debug.LogFormat("dajare");
+    //      Text dajare_text = dajare_object.GetComponent<Text>(); 
+    //     dajare_text.text = resultText;
     //}
 }
