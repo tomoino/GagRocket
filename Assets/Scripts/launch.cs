@@ -13,6 +13,8 @@ public class launch : MonoBehaviour
     private int flag = 0;
     private string resultText;
 
+  //public Gameobject dajare_object = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +45,7 @@ public class launch : MonoBehaviour
     }
     public void pushbutton(){
         Debug.Log("ボタンを押した");
-        GameObject obj = GameObject.Find("Sphere");  
+        GameObject obj = GameObject.Find("AtomRocket");  
         obj.transform.position += Vector3.up;
 
         if(flag == 0){
@@ -53,6 +55,11 @@ public class launch : MonoBehaviour
         else{
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
+          //  dajare();
         }
     }
+    //public void dajare(){
+    //    GameObject dajare_text = GameObject.Find("dajare"); 
+      //  dajare_text.text = resultText;
+    //}
 }
