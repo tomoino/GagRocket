@@ -58,6 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-# model
-src/rnn_model.h5
+# RNN
+src/w2v.txt
 src/word_index.csv
+src/rnn_model.h5
