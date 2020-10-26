@@ -5,13 +5,15 @@ using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
 using Gag2Score;
-
 using UnityEngine.Networking;
+//using System.Linq;
 
 public class launch : MonoBehaviour
 {
     public GameObject dajare_object = null;
     public GameObject rocket_object = null;
+
+    private List<float> data_ = new List<float>();
 
     private DictationRecognizer m_DictationRecognizer;
     private int flag = 0;
@@ -61,6 +63,10 @@ public class launch : MonoBehaviour
             rb2.AddForce (force2);
             flag = 3;
         } 
+        // data_.Add(Random.Range (0, 50));
+        // if (data_.Count > 100) {
+        //     data_.RemoveAt(0);
+        // }
     }
 
     private IEnumerator Connect(){
@@ -117,4 +123,39 @@ public class launch : MonoBehaviour
         Text dajare_text = dajare_object.GetComponent<Text>(); 
         dajare_text.text = str;
     }
+
+    // void OnGUI()
+    // {
+    //     var area = GUILayoutUtility.GetRect(Screen.width, Screen.height);
+
+    //     // Grid
+    //     const int div = 10;
+    //     for (int i = 0; i <= div; ++i) {
+    //         var lineColor = (i == 0 || i == div) ? Color.white : Color.gray;
+    //         var lineWidth = (i == 0 || i == div) ? 2f : 1f;
+    //         var x = (area.width  / div) * i;
+    //         var y = (area.height / div) * i;
+    //         Drawing.DrawLine (
+    //             new Vector2(area.x + x, area.y),
+    //             new Vector2(area.x + x, area.yMax), lineColor, lineWidth, true);
+    //         Drawing.DrawLine (
+    //             new Vector2(area.x,    area.y + y),
+    //             new Vector2(area.xMax, area.y + y), lineColor, lineWidth, true);
+    //     }
+
+    //     // Data
+    //     if (data_.Count > 0) {
+    //         var max = data_.Max();
+    //         var dx  = area.width / data_.Count; 
+    //         var dy  = area.height / max;
+    //         Vector2 previousPos = new Vector2(area.x, area.yMax); 
+    //         for (var i = 0; i < data_.Count; ++i) {
+    //             var x = area.x + dx * i;
+    //             var y = area.yMax - dy * data_[i];
+    //             var currentPos = new Vector2(x, y);
+    //             Drawing.DrawLine(previousPos, currentPos, Color.red, 3f, true);
+    //             previousPos = currentPos;
+    //         }
+    //     }
+    // }
 }
