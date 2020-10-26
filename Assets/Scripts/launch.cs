@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
-using Gag2Score;
+
 using UnityEngine.Networking;
 
 public class launch : MonoBehaviour
@@ -67,14 +67,7 @@ public class launch : MonoBehaviour
     }
 
     private IEnumerator Connect(){
-        HumorCalculator hc = new HumorCalculator();
-        var (isDajare, kana) = hc.humorScore(resultText);
-        if (!isDajare)
-        {
-            score = 0.0;
-            yield return null;
-        }
-        text = kana;
+        text = resultText;
         string myjson = JsonUtility.ToJson(this);
         byte[] postData = System.Text.Encoding.UTF8.GetBytes (myjson);
         var request = new UnityWebRequest(URL, "POST");
@@ -106,12 +99,12 @@ public class launch : MonoBehaviour
         else{ // 2度目にボタンを押されたとき。音声認識をとめる。
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
-            // StartCoroutine (Connect ()); // APIを使ってスコアを計算する
+            StartCoroutine (Connect ()); // APIを使ってスコアを計算する
 
             // ロケット検証用
-            score = 0.6;
-            speed *= (float)score;
-            flag = 2;
+            // score = 0.6;
+            // speed *= (float)score;
+            // flag = 2;
         }
     }
 

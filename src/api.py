@@ -1,8 +1,8 @@
 # python
 
 from flask import Flask, Blueprint, request, abort, jsonify
-import numpy as np
 from keras.models import load_model
+from humorcalc import calc_humor_score
 
 app = Flask(__name__)
 
@@ -11,7 +11,7 @@ def load_word_index(filepath):
 
     with open(filepath,'r') as f:
         for l in f:
-            row = l.split(",")
+            row = l.replace("\n", "").split(",")
             word_index[row[0]] = row[1]
 
     return word_index
@@ -25,18 +25,9 @@ word_index = load_word_index("word_index.csv")
 def index():
     payload = request.json
     gag = payload.get('text')
+    score = calc_humor_score(gag, model, word_index)
 
-    max_length = 32
-    gag = [word_index[word] for word in gag.split(' ') if word in word_index]
-    gag = gag + [0]*(max_length - len(gag))
-    ret = predict(np.array([gag]))
-    predict_result = ret[0][0]
-
-    return str(predict_result), 201
-
-def predict(gags):
-    ret = model.predict(gags)
-    return ret
+    return str(score), 201
 
 if __name__ == "__main__":
 	app.debug = True
