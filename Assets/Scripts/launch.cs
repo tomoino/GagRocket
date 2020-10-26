@@ -104,7 +104,12 @@ public class launch : MonoBehaviour
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
             displayText(resultText); 
-            StartCoroutine (Connect ()); // APIを使ってスコアを計算する
+            // StartCoroutine (Connect ()); // APIを使ってスコアを計算する
+
+            // ロケット検証用
+            score = 0.6;
+            speed *= (float)score;
+            flag = 2;
         }
     }
 
