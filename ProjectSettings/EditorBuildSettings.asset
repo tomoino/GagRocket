@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/GagRocket.unity
+    guid: bc4b93cbad5199148b0e4e99bcc3a6e1
   m_configObjects: {}
