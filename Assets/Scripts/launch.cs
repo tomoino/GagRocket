@@ -10,20 +10,16 @@ using UnityEngine.Networking;
 
 public class launch : MonoBehaviour
 {
-    private DictationRecognizer m_DictationRecognizer;
-
-    private int flag = 0;
-    private string resultText;
-
     public GameObject dajare_object = null;
-    
-    private const string URL = "http://localhost:5000/";
-    public string text;
-    private double score;
-
     public GameObject rocket_object = null;
 
+    private DictationRecognizer m_DictationRecognizer;
+    private int flag = 0;
     private float speed = 10;
+    private string resultText; // Dictationの結果
+    private const string URL = "http://localhost:5000/";
+    public string text; // APIに渡すテキスト。APIに渡して使用するためpublic
+    private double score; // APIの結果。面白さのスコア。
 
     // Start is called before the first frame update
     void Start()
@@ -52,14 +48,14 @@ public class launch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(flag == 2){
+        if (flag == 2) {
             Rigidbody rb = rocket_object.GetComponent<Rigidbody>();  
             Vector3 force = new Vector3 (0.0f,speed,0.0f);
             rb.AddForce (force);
         }
 
         GameObject obj = GameObject.Find("AtomRocket");
-        if(speed<=5.0 && obj.transform.position.y>50){
+        if (speed <= 5.0 && obj.transform.position.y > 50) {
             Rigidbody rb2 = rocket_object.GetComponent<Rigidbody>();
             Vector3 force2 = new Vector3 (0.0f,-9.8f,0.0f);
             rb2.AddForce (force2);
@@ -69,7 +65,7 @@ public class launch : MonoBehaviour
 
     private IEnumerator Connect(){
         HumorCalculator hc = new HumorCalculator();
-        var (isDajare, kana) = hc.humorScore("布団が吹っ飛んだ");
+        var (isDajare, kana) = hc.humorScore(resultText);
         if (!isDajare)
         {
             score = 0.0;
@@ -92,45 +88,28 @@ public class launch : MonoBehaviour
         {
             score = double.Parse(request.downloadHandler.text);
             Debug.LogFormat("Humor Score: {0}", score);
+            speed *= (float)score;
+            flag = 2;
         }
     }
 
     public void pushbutton(){
         Debug.Log("ボタンを押した");
 
-        if(flag == 0){
+        if (flag == 0) { // ボタンを押されてから一度だけ実行。音声認識処理を走らせる。
             flag = 1;
             m_DictationRecognizer.Start();
         }
-        else{
+        else{ // 2度目にボタンを押されたとき。音声認識をとめる。
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
-            dajare();
-            //ダジャレをスコア化（floatで0~1が返ってくる)        
-            StartCoroutine (Connect ());
-            float score = 0.5f;
-            speed *= score;
-            flag = 2;
+            displayText(resultText); 
+            StartCoroutine (Connect ()); // APIを使ってスコアを計算する
         }
     }
-    public void dajare(){
-        //Debug.LogFormat("dajare");
+
+    private void displayText(string str){
         Text dajare_text = dajare_object.GetComponent<Text>(); 
-        dajare_text.text = resultText;
+        dajare_text.text = str;
     }
-
-    // public void speed(){
-    //     Rigidbody rb = rocket_object.GetComponent<Rigidbody>();  
-    //     Vector3 force = new Vector3 (0.0f,30.0f,0.0f);
-    //     rb.AddForce (force);  
-    // }
-
-    //  for文だと処理スピードが速くて加速にならない。
-    // public void speed(float score){
-    //     Rigidbody rb = rocket_object.GetComponent<Rigidbody>();  
-    //     Vector3 force = new Vector3 (0.0f,score*200,0.0f);
-    //     for(int i=0;i<score*100;i++){
-    //         rb.AddForce (force);
-    //     }
-    // }
 }

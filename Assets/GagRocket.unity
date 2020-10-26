@@ -1027,6 +1027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dajare_object: {fileID: 1515360229}
   rocket_object: {fileID: 2088213153}
+  text: 
 --- !u!4 &1966424550
 Transform:
   m_ObjectHideFlags: 0
