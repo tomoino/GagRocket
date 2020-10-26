@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
+using Gag2Score;
 
+using UnityEngine.Networking;
 
 public class launch : MonoBehaviour
 {
@@ -14,6 +16,10 @@ public class launch : MonoBehaviour
     private string resultText;
 
     public GameObject dajare_object = null;
+    
+    private const string URL = "http://localhost:5000/";
+    public string text;
+    private double score;
 
     public GameObject rocket_object = null;
 
@@ -40,6 +46,7 @@ public class launch : MonoBehaviour
         {
             Debug.LogErrorFormat("Dictation error: {0}; HResult = {1}.", error, hresult);
         };
+
     }
 
     // Update is called once per frame
@@ -58,9 +65,39 @@ public class launch : MonoBehaviour
             rb2.AddForce (force2);
             flag = 3;
         } 
-    }   
+    }
+
+    private IEnumerator Connect(){
+        HumorCalculator hc = new HumorCalculator();
+        var (isDajare, kana) = hc.humorScore("布団が吹っ飛んだ");
+        if (!isDajare)
+        {
+            score = 0.0;
+            yield return null;
+        }
+        text = kana;
+        string myjson = JsonUtility.ToJson(this);
+        byte[] postData = System.Text.Encoding.UTF8.GetBytes (myjson);
+        var request = new UnityWebRequest(URL, "POST");
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.Send();
+
+        if (request.isNetworkError || request.isHttpError)
+        {
+            Debug.Log(request.error);
+        }
+        else
+        {
+            score = double.Parse(request.downloadHandler.text);
+            Debug.LogFormat("Humor Score: {0}", score);
+        }
+    }
+
     public void pushbutton(){
         Debug.Log("ボタンを押した");
+
         if(flag == 0){
             flag = 1;
             m_DictationRecognizer.Start();
@@ -69,7 +106,8 @@ public class launch : MonoBehaviour
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
             dajare();
-            //ダジャレをスコア化（floatで0~1が返ってくる)
+            //ダジャレをスコア化（floatで0~1が返ってくる)        
+            StartCoroutine (Connect ());
             float score = 0.5f;
             speed *= score;
             flag = 2;
