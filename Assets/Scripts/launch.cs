@@ -5,13 +5,14 @@ using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
 using Gag2Score;
-
 using UnityEngine.Networking;
 
 public class launch : MonoBehaviour
 {
     public GameObject dajare_object = null;
     public GameObject rocket_object = null;
+    public GameObject button_object = null;
+    private List<float> data_ = new List<float>();
 
     private DictationRecognizer m_DictationRecognizer;
     private int flag = 0;
@@ -30,6 +31,8 @@ public class launch : MonoBehaviour
         {
             Debug.LogFormat("Dictation result: {0}", text);
             resultText = text;
+            displayText(resultText);
+            buttonText();
         };
 
         m_DictationRecognizer.DictationComplete += (completionCause) =>
@@ -98,12 +101,11 @@ public class launch : MonoBehaviour
 
         if (flag == 0) { // ボタンを押されてから一度だけ実行。音声認識処理を走らせる。
             flag = 1;
-            m_DictationRecognizer.Start();
+            m_DictationRecognizer.Start(); 
         }
         else{ // 2度目にボタンを押されたとき。音声認識をとめる。
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
-            displayText(resultText); 
             // StartCoroutine (Connect ()); // APIを使ってスコアを計算する
 
             // ロケット検証用
@@ -116,5 +118,9 @@ public class launch : MonoBehaviour
     private void displayText(string str){
         Text dajare_text = dajare_object.GetComponent<Text>(); 
         dajare_text.text = str;
+    }
+    private void buttonText(){
+        Text button_text = button_object.GetComponent<Text>(); 
+        button_text.text = "発射";
     }
 }
