@@ -29,7 +29,11 @@ def morph(text):
 
         info = re.split('[,]', item[1])
         words.append(info[6])
-        reading += info[8] if info[8] != "ヲ" else "オ"
+
+        if len(info) == 9:
+            reading += info[8] if info[8] != "ヲ" else "オ"
+        else:
+            reading += item[0] # 登録されていない語やカタカナ語への対応
 
     return (words, reading)
 
@@ -38,7 +42,7 @@ def is_dajare(reading):
     reading_len = len(reading)
 
     for i in range(2, int(reading_len / 2) + 1): # i文字の繰り返しを検出する
-        parts = [reading[j:j + i] for j in range(0, reading_len - i)] # 1文字ずつずらしながら検出
+        parts = [reading[j:j + i] for j in range(0, reading_len - i + 1)] # 1文字ずつずらしながら検出
         if len(parts) != len(set(parts)):
             return True
 
