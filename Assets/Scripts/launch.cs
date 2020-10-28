@@ -101,10 +101,10 @@ public class launch : MonoBehaviour
             Debug.LogFormat("result: {0}",resultText);
             StartCoroutine (Connect ()); // APIを使ってスコアを計算する
 
-            // ロケット検証用
-            // score = 0.6;
-            // speed *= (float)score;
-            // flag = 2;
+            //ロケット検証用
+            score = 0.9;
+            speed *= (float)score;
+            flag = 2;
         }
     }
 
