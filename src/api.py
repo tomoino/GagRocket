@@ -18,8 +18,8 @@ def load_word_index(filepath):
 
 # model and backend graph must be created on global
 global model, word_index
-model = load_model("rnn_model.h5")
-word_index = load_word_index("word_index.csv")
+model = load_model("model/rnn_model.h5")
+word_index = load_word_index("data/word_index.csv")
 
 @app.route('/', methods=['POST'])
 def index():
