@@ -59,7 +59,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 # RNN
-src/w2v.txt
-src/word_index.csv
-src/rnn_model.h5
+src/data/w2v.txt
+src/data/word_index.csv
 src/model/
