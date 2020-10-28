@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
+using UnityEngine.SceneManagement;
 
 using UnityEngine.Networking;
 
@@ -96,15 +97,19 @@ public class launch : MonoBehaviour
             flag = 1;
             m_DictationRecognizer.Start(); 
         }
-        else{ // 2度目にボタンを押されたとき。音声認識をとめる。
+        else if(flag == 1){ // 2度目にボタンを押されたとき。音声認識をとめる。
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
             StartCoroutine (Connect ()); // APIを使ってスコアを計算する
+            buttonText2();
 
             //ロケット検証用
-            score = 0.9;
+            score = 0.5;
             speed *= (float)score;
             flag = 2;
+        }
+        else{
+            SceneManager.LoadScene("Title");
         }
     }
 
@@ -115,5 +120,10 @@ public class launch : MonoBehaviour
     private void buttonText(){
         Text button_text = button_object.GetComponent<Text>(); 
         button_text.text = "発射";
+    }
+
+    private void buttonText2(){ 
+        Text button_text = button_object.GetComponent<Text>();
+        button_text.text = "retry";
     }
 }
