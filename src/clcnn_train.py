@@ -9,8 +9,9 @@ from numpy import *
 import codecs
 import pandas as pd
 import matplotlib.pyplot as plt
+from load_data import load_dajare_data
 
-def create_model(embed_size=128, max_length=50, filter_sizes=(2, 3, 4, 5), filter_num=64):
+def create_model(embed_size=128, max_length=80, filter_sizes=(2, 3, 4, 5), filter_num=64):
     inp = Input(shape=(max_length,))
     emb = Embedding(0xffff, embed_size)(inp)
     emb_ex = Reshape((max_length, embed_size, 1))(emb)
@@ -29,38 +30,45 @@ def create_model(embed_size=128, max_length=50, filter_sizes=(2, 3, 4, 5), filte
     model = Model(input=inp, output=fc2)
     return model
 
-def load_data(filepath, max_length=50, min_length=1):
-    gags = []
-    tmp_gags = []
+def load_data(filepath, max_length=80, min_length=1):
+    funny_gags = [] # score 3以上のだじゃれを格納
+    not_funny_gags = [] # score 3未満のだじゃれを格納
     with open(filepath,'r',encoding="utf-8_sig") as f:
         for l in f:
             row = l.split(",")
             
             score = row[1]
-            kana = row[4]
+            reading = row[3]
 
             # 文字毎にUNICODEに変換
-            kana = [ord(c) for c in kana.strip()]
+            reading = [ord(c) for c in reading.strip()]
             # 長い部分は打ち切り
-            kana = kana[:max_length]
-            kana_len = len(kana)
-            if kana_len < min_length:
+            reading = reading[:max_length]
+            reading_len = len(reading)
+            if reading_len < min_length:
                 continue
-            if kana_len < max_length:
+            if reading_len < max_length:
                 # 固定長にするために足りない部分を0で埋める
-                kana += ([0] * (max_length - kana_len))
+                reading += ([0] * (max_length - reading_len))
             if float(score) < 3: # 評価3未満のだじゃれは面白くないと判定
-                tmp_gags.append((0, kana))
+                not_funny_gags.append((0, reading))
             else:
-                gags.append((1, kana))
+                funny_gags.append((1, reading))
 
-    # 学習のためには面白いだじゃれとそれ以外が同数であった方がいい
-    random.shuffle(tmp_gags)
-    gags.extend(tmp_gags[:len(gags)])
+    gags = funny_gags + not_funny_gags
     random.shuffle(gags)
+
+    print(str(len(gags))+' examples are available')
     return gags
 
-def train(inputs, targets, batch_size=100, epoch_count=100, max_length=50, model_filepath="model.h5", learning_rate=0.001):
+def train(inputs, targets, batch_size=1024, epoch_count=100, max_length=80, model_filepath="model/clcnn_model.h5", learning_rate=0.001):
+    # train:validation:test = 6:2:2
+    test_len = int(len(inputs) * 0.2)
+    test_inputs = inputs[0:test_len]
+    test_targets = targets[0:test_len]
+    train_inputs = inputs[test_len:]
+    train_targets = targets[test_len:]
+    
     # 学習率を少しずつ下げるようにする
     start = learning_rate
     stop = learning_rate * 0.01
@@ -73,23 +81,30 @@ def train(inputs, targets, batch_size=100, epoch_count=100, max_length=50, model
                   optimizer=optimizer,
                   metrics=['accuracy'])
 
+    model.summary()
+
     # 学習
-    history = model.fit(inputs, targets,
+    history = model.fit(train_inputs, train_targets,
               nb_epoch=epoch_count,
               batch_size=batch_size,
               verbose=1,
-              validation_split=0.1,
+              validation_split=0.25,
               shuffle=True,
               callbacks=[
                   LearningRateScheduler(lambda epoch: learning_rates[epoch]),
               ])
+
+    score = model.evaluate(test_inputs, test_targets, verbose=0)
+    print('Test on '+str(len(test_inputs))+' examples')
+    print('Test loss:', score[0])
+    print('Test accuracy:', score[1])
 
     # モデルの保存
     model.save(model_filepath)
     return history
 
 if __name__ == "__main__":
-    gags = load_data("data_for_train.csv")
+    gags = load_data("data/data_for_ml.csv")
 
     input_values = []
     target_values = []
@@ -98,7 +113,10 @@ if __name__ == "__main__":
         target_values.append(target_value)
     input_values = np.array(input_values)
     target_values = np.array(target_values)
-    history = train(input_values, target_values, epoch_count=500)
+    history = train(input_values, target_values, epoch_count=100)
     history_df = pd.DataFrame(history.history)
-    history_df.plot()
+
+    history_df.loc[:,['val_loss','loss']].plot()
+    plt.show()
+    history_df.loc[:,['val_accuracy','accuracy']].plot()
     plt.show()

@@ -3,14 +3,14 @@
 import numpy as np
 from keras.models import load_model
 
-def predict(gags, model_filepath="model.h5"):
+def predict(gags, model_filepath="model/clcnn_model.h5"):
     model = load_model(model_filepath)
     ret = model.predict(gags)
     return ret
 
 if __name__ == "__main__":
-    max_length = 50
-    gag = "フトンガフットンダ"
+    max_length = 80
+    gag = "アルミカンノウエニアルミカン"
     gag = [ord(x) for x in gag.strip()]
     gag = gag[:max_length]
     if len(gag) < max_length:

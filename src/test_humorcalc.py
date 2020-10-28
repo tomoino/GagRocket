@@ -21,6 +21,7 @@ def is_dajare_test():
     fn = 0
 
     false_data = []  # FP, FNのデータを保存する
+    data_for_ml = [] # TPから機械学習用のデータを作る [原文, score, words(半角join), reading]
     cnt = 0
 
     for data in test_data:
@@ -38,6 +39,7 @@ def is_dajare_test():
             false_data.append(["False Positive", data[0], reading])
         elif prediction == 1 and actual == 1:
             tp += 1
+            data_for_ml.append([data[0], data[2], ' '.join(words), reading]) 
 
         if cnt % 1000 == 0:
             print("Data no." + str(cnt) + " is done.")
@@ -65,6 +67,15 @@ def is_dajare_test():
     with open('data/false_data.csv', 'w', newline="") as f:
         writer = csv.writer(f)
         for row in false_data:
+            try:
+                writer.writerow(row)
+            except:
+                continue
+
+    # 機械学習用のデータを出力
+    with open('data/data_for_ml.csv', 'w', newline="") as f:
+        writer = csv.writer(f)
+        for row in data_for_ml:
             try:
                 writer.writerow(row)
             except:

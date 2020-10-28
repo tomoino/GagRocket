@@ -62,3 +62,4 @@ crashlytics-build.properties
 src/w2v.txt
 src/word_index.csv
 src/rnn_model.h5
+src/model/
