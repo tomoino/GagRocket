@@ -12,7 +12,7 @@ python src/rnn_train.py
 ``` 
 python src/api.py 
 ```
-* build/GagRocket.exeを実行
+* dist/GagRocket.exeを実行
 
 ## 開発環境
 * Windows 10 Pro / Home 2004
