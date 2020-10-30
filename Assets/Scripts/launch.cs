@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
+using UnityEngine.SceneManagement;
 
 using UnityEngine.Networking;
 
@@ -12,11 +13,16 @@ public class launch : MonoBehaviour
     public GameObject dajare_object = null;
     public GameObject rocket_object = null;
     public GameObject button_object = null;
+    public GameObject score_object = null;
+    private GameObject mainCamera;
+    private GameObject subCamera;
+    private GameObject Rocket;
+    private GameObject particle;
     private List<float> data_ = new List<float>();
 
     private DictationRecognizer m_DictationRecognizer;
     private int flag = 0;
-    private float speed = 10;
+    private float speed = 50;
     private string resultText; // Dictationの結果
     private const string URL = "http://localhost:5000/";
     public string text; // APIに渡すテキスト。APIに渡して使用するためpublic
@@ -25,6 +31,12 @@ public class launch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainCamera = GameObject.Find("Main Camera");
+        subCamera = GameObject.Find("Sub Camera");
+        //Rocket = GameObject.Find("AtomRocket");
+        Rocket = GameObject.FindGameObjectWithTag("obj");
+        subCamera.SetActive(false); 
+
         m_DictationRecognizer = new DictationRecognizer();
 
         m_DictationRecognizer.DictationResult += (text, confidence) =>
@@ -51,19 +63,37 @@ public class launch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (flag == 2) {
+        if (flag == 2 && Rocket.transform.position.y < 30){
             Rigidbody rb = rocket_object.GetComponent<Rigidbody>();  
-            Vector3 force = new Vector3 (0.0f,speed,0.0f);
+            Vector3 force = new Vector3 (0.0f,5.0f,0.0f);
             rb.AddForce (force);
         }
-
-        GameObject obj = GameObject.Find("AtomRocket");
-        if (speed <= 5.0 && obj.transform.position.y > 50) {
-            Rigidbody rb2 = rocket_object.GetComponent<Rigidbody>();
-            Vector3 force2 = new Vector3 (0.0f,-9.8f,0.0f);
+        if (flag == 2 && Rocket.transform.position.y > 30) {
+            Rigidbody rb2 = rocket_object.GetComponent<Rigidbody>();  
+            Vector3 force2 = new Vector3 (0.0f,speed,0.0f);
             rb2.AddForce (force2);
+        }
+        if (speed <= 25.0 && Rocket.transform.position.y > 50) {
+            Rigidbody rb3 = rocket_object.GetComponent<Rigidbody>();
+            Vector3 force3 = new Vector3 (0.0f,-9.8f,0.0f);
+            rb3.AddForce (force3);
             flag = 3;
         } 
+        if (flag == 3 && Rocket.transform.position.y<10){
+            mainCamera.SetActive(false);
+            subCamera.SetActive(true);
+        }
+        if (flag == 3 && Rocket.transform.position.y<0){
+            displayText2();
+            flag = 4;
+        }
+        if (Rocket.transform.position.y > 400){
+            displayText3();
+            flag = 4;
+        }
+        if (flag == 4){
+            displayText4();
+        }
     }
 
     private IEnumerator Connect(){
@@ -96,15 +126,20 @@ public class launch : MonoBehaviour
             flag = 1;
             m_DictationRecognizer.Start(); 
         }
-        else{ // 2度目にボタンを押されたとき。音声認識をとめる。
+        else if(flag == 1){ // 2度目にボタンを押されたとき。音声認識をとめる。
             m_DictationRecognizer.Stop();
             Debug.LogFormat("result: {0}",resultText);
             StartCoroutine (Connect ()); // APIを使ってスコアを計算する
+            buttonText2();
+            engine();
 
-            // ロケット検証用
-            // score = 0.6;
-            // speed *= (float)score;
-            // flag = 2;
+            //ロケット検証用
+            score = 0.7;
+            speed *= (float)score;
+            flag = 2;
+        }
+        else{
+            SceneManager.LoadScene("Title");
         }
     }
 
@@ -115,5 +150,28 @@ public class launch : MonoBehaviour
     private void buttonText(){
         Text button_text = button_object.GetComponent<Text>(); 
         button_text.text = "発射";
+    }
+    private void buttonText2(){ 
+        Text button_text = button_object.GetComponent<Text>();
+        button_text.text = "retry";
+    }
+    private void displayText2(){
+        Text dajare_text = dajare_object.GetComponent<Text>(); 
+        dajare_text.text = "Not Funny";
+    }
+    private void displayText3(){
+        Text dajare_text = dajare_object.GetComponent<Text>(); 
+        dajare_text.text = "Funny!!";
+    }
+    private void displayText4(){
+        Text score_text = score_object.GetComponent<Text>(); 
+        score_text.text = $"score:{(int)(100*score)}";
+    }
+
+    private void engine(){
+        particle = GameObject.FindGameObjectWithTag("effect");
+        //var obj = Instantiate (particle, transform.position,transform.rotation);
+        ParticleSystem p = particle.GetComponent<ParticleSystem>();
+        p.Play();
     }
 }

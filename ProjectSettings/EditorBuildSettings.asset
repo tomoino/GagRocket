@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/GagRocket.unity
+    path: Assets/Scenes/GagRocket.unity
     guid: bc4b93cbad5199148b0e4e99bcc3a6e1
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 913e6d5a3ff87ca4caa08f149d6f84aa
   m_configObjects: {}
