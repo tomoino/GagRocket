@@ -32561,6 +32561,7 @@ GameObject:
   m_Component:
   - component: {fileID: 673507064239899716}
   - component: {fileID: 673507064220519758}
+  - component: {fileID: -6073005837659273610}
   m_Layer: 0
   m_Name: Explosion single_2 sharp 1
   m_TagString: Untagged
@@ -37303,6 +37304,18 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &-6073005837659273610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673507064239878736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3854e014d314d044b95d302cb4804b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1421752600224461801
 PrefabInstance:
   m_ObjectHideFlags: 0
