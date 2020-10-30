@@ -72,17 +72,40 @@ def train(inputs, targets, embedding_matrix, batch_size=1024, epoch_count=100, m
     
     # 単語数、embeddingの次元
     num_words, word_vec_size = embedding_matrix.shape
-    # モデルの構築
+    # モデルの構築 RNN
     model = Sequential([
         Embedding(num_words, word_vec_size,
                 weights=[embedding_matrix], 
                 input_length=max_length,
                 trainable=False, 
                 mask_zero=True),
-        # LSTM(1, activation=None, input_shape=(None, num_words, word_vec_size), return_sequences=False),
         RNN(SimpleRNNCell(1, activation=None), input_shape=(None, num_words, word_vec_size), return_sequences=False),
         Activation("sigmoid")
     ])
+
+    # モデルの構築 RNN 2
+    # model = Sequential([
+    #     Embedding(num_words, word_vec_size,
+    #             weights=[embedding_matrix], 
+    #             input_length=max_length,
+    #             trainable=False, 
+    #             mask_zero=True),
+    #     RNN(SimpleRNNCell(50, activation=None), input_shape=(None, num_words, word_vec_size), return_sequences=False),
+    #     Dense(25),
+    #     Dense(1),
+    #     Activation("sigmoid")
+    # ])
+
+    # モデルの構築 LSTM
+    # model = Sequential([
+    #     Embedding(num_words, word_vec_size,
+    #             weights=[embedding_matrix], 
+    #             input_length=max_length,
+    #             trainable=False, 
+    #             mask_zero=True),
+    #     LSTM(1, activation=None, input_shape=(None, num_words, word_vec_size), return_sequences=False),
+    #     Activation("sigmoid")
+    # ])
 
     model.compile(loss='binary_crossentropy',
               optimizer=tf.keras.optimizers.Adam(1e-4),
