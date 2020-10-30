@@ -13,6 +13,9 @@ public class launch : MonoBehaviour
     public GameObject dajare_object = null;
     public GameObject rocket_object = null;
     public GameObject button_object = null;
+    private GameObject mainCamera;
+    private GameObject subCamera;
+    private GameObject Rocket;
     private List<float> data_ = new List<float>();
 
     private DictationRecognizer m_DictationRecognizer;
@@ -26,6 +29,12 @@ public class launch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainCamera = GameObject.Find("Main Camera");
+        subCamera = GameObject.Find("Sub Camera");
+        //Rocket = GameObject.Find("AtomRocket");
+        Rocket = GameObject.FindGameObjectWithTag("obj");
+        subCamera.SetActive(false); 
+
         m_DictationRecognizer = new DictationRecognizer();
 
         m_DictationRecognizer.DictationResult += (text, confidence) =>
@@ -58,13 +67,16 @@ public class launch : MonoBehaviour
             rb.AddForce (force);
         }
 
-        GameObject obj = GameObject.Find("AtomRocket");
-        if (speed <= 5.0 && obj.transform.position.y > 50) {
+        if (speed <= 5.0 && Rocket.transform.position.y > 50) {
             Rigidbody rb2 = rocket_object.GetComponent<Rigidbody>();
             Vector3 force2 = new Vector3 (0.0f,-9.8f,0.0f);
             rb2.AddForce (force2);
             flag = 3;
         } 
+        if (flag == 3 && Rocket.transform.position.y<20){
+            mainCamera.SetActive(false);
+            subCamera.SetActive(true);
+        }
     }
 
     private IEnumerator Connect(){
@@ -102,6 +114,7 @@ public class launch : MonoBehaviour
             Debug.LogFormat("result: {0}",resultText);
             StartCoroutine (Connect ()); // APIを使ってスコアを計算する
             buttonText2();
+            //Explode();
 
             //ロケット検証用
             score = 0.5;
@@ -121,7 +134,6 @@ public class launch : MonoBehaviour
         Text button_text = button_object.GetComponent<Text>(); 
         button_text.text = "発射";
     }
-
     private void buttonText2(){ 
         Text button_text = button_object.GetComponent<Text>();
         button_text.text = "retry";
