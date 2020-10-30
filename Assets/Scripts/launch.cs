@@ -13,6 +13,7 @@ public class launch : MonoBehaviour
     public GameObject dajare_object = null;
     public GameObject rocket_object = null;
     public GameObject button_object = null;
+    public GameObject score_object = null;
     private GameObject mainCamera;
     private GameObject subCamera;
     private GameObject Rocket;
@@ -90,6 +91,9 @@ public class launch : MonoBehaviour
             displayText3();
             flag = 4;
         }
+        if (flag == 4){
+            displayText4();
+        }
     }
 
     private IEnumerator Connect(){
@@ -130,7 +134,7 @@ public class launch : MonoBehaviour
             engine();
 
             //ロケット検証用
-            score = 0.5;
+            score = 0.7;
             speed *= (float)score;
             flag = 2;
         }
@@ -153,12 +157,17 @@ public class launch : MonoBehaviour
     }
     private void displayText2(){
         Text dajare_text = dajare_object.GetComponent<Text>(); 
-        dajare_text.text = "Not Humor";
+        dajare_text.text = "Not Funny";
     }
     private void displayText3(){
         Text dajare_text = dajare_object.GetComponent<Text>(); 
-        dajare_text.text = "Humorous Gag!!";
+        dajare_text.text = "Funny!!";
     }
+    private void displayText4(){
+        Text score_text = score_object.GetComponent<Text>(); 
+        score_text.text = $"score:{(int)(100*score)}";
+    }
+
     private void engine(){
         particle = GameObject.FindGameObjectWithTag("effect");
         //var obj = Instantiate (particle, transform.position,transform.rotation);
