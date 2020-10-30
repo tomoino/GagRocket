@@ -134,7 +134,7 @@ public class launch : MonoBehaviour
             engine();
 
             //ロケット検証用
-            score = 0.7;
+            score = 0.4;
             speed *= (float)score;
             flag = 2;
         }
