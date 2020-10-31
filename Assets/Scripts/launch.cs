@@ -34,11 +34,10 @@ public class launch : MonoBehaviour
     {
         mainCamera = GameObject.Find("Main Camera");
         subCamera = GameObject.Find("Sub Camera");
-        //Rocket = GameObject.Find("AtomRocket");
         Rocket = GameObject.FindGameObjectWithTag("obj");
         rigid = rocket_object.GetComponent<Rigidbody>();
         subCamera.SetActive(false); 
-
+    
         m_DictationRecognizer = new DictationRecognizer();
 
         m_DictationRecognizer.DictationResult += (text, confidence) =>
@@ -69,16 +68,22 @@ public class launch : MonoBehaviour
             Rigidbody rb = rocket_object.GetComponent<Rigidbody>();  
             Vector3 force = new Vector3 (0.0f,5.0f,0.0f);
             rb.AddForce (force);
+            Rigidbody crb = mainCamera.GetComponent<Rigidbody>();  
+            crb.AddForce (force);
         }
         if (flag == 2 && Rocket.transform.position.y > 30) {
             Rigidbody rb2 = rocket_object.GetComponent<Rigidbody>();  
             Vector3 force2 = new Vector3 (0.0f,speed,0.0f);
             rb2.AddForce (force2);
+            Rigidbody crb2 = mainCamera.GetComponent<Rigidbody>();  
+            crb2.AddForce (force2);
         }
         if (speed <= 25.0 && Rocket.transform.position.y > 50) {
             Rigidbody rb3 = rocket_object.GetComponent<Rigidbody>();
             Vector3 force3 = new Vector3 (0.0f,-9.8f,0.0f);
             rb3.AddForce (force3);
+            Rigidbody crb3 = mainCamera.GetComponent<Rigidbody>();
+            crb3.AddForce (force3);
             flag = 3;
         }
         if (flag == 3 && rigid.velocity.y < 1.0f) {
